@@ -33,8 +33,16 @@ jobs:
         cd `cat /tmp/WLEDtemp/wledfoldername`
         npm install
         echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:esp32c3dev' >>platformio.ini
-        echo 'build_flags = ${env:esp32c3dev.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LEDPIN=10 -D AUDIOPIN=9 -D DEFAULT_LED_COUNT=100 -D ABL_MILLIAMPS_DEFAULT=2500' >>platformio.ini
+        echo 'extends = env:esp32c3dev_4MB_M' >>platformio.ini
+        echo 'build_flags = ${env:esp32c3dev_4MB_M.build_flags} -D SR_DEBUG -D MIC_LOGGER -D WLED_AP_SSID_UNIQUE -D WLED_ENABLE_MQTT -D USERMOD_SENSORSTOMQTT -D USERMOD_BME280 -D LEDPIN=10 -D AUDIOPIN=9 -D DEFAULT_LED_COUNT=100 -D ABL_MILLIAMPS_DEFAULT=2500' >>platformio.ini
+        echo 'lib_deps = ' >>platformio.ini
+        echo '  ${env:esp32c3dev_4MB_M.lib_deps}' >>platformio.ini
+        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+        echo '  BME280@~3.0.0' >>platformio.ini
+        echo '  Wire' >>platformio.ini
         pio run -e custom_build || pio run -e custom_build
 
     - name: Copy Files
@@ -45,7 +53,7 @@ jobs:
         cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/
         date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: release-artifact
         path: |
