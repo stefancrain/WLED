@@ -31,15 +31,7 @@ jobs:
         npm install
         echo '[env:custom_build]' >>platformio.ini
         echo 'extends = env:esp32c3dev' >>platformio.ini
-        echo 'build_flags = ${env:esp32c3dev.build_flags} -D WLED_ENABLE_MQTT -D WLED_DISABLE_ALEXA -D WLED_DISABLE_HUESYNC -D LEDPIN=10 -D AUDIOPIN=9 -D USERMOD_SENSORSTOMQTT -D USERMOD_BME280' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:esp32c3dev.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  BME280@~3.0.0' >>platformio.ini
-        echo '  Wire' >>platformio.ini
+        echo 'build_flags = ${env:esp32c3dev.build_flags} -D WLED_DISABLE_ALEXA -D WLED_DISABLE_HUESYNC -D LEDPIN=10 -D AUDIOPIN=9' >>platformio.ini
         
         pio run -e custom_build || pio run -e custom_build
     - name: Copy Files
